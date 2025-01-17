@@ -28,9 +28,11 @@ public class CartItem {
         this.TotalPrice = TotalPrice;
         this.isDisabled = isDisabled;
     }
-    
-     public CartItem() {
+
+    public CartItem() {
     }
+    
+    
     public int getCartItemID() {
         return CartItemID;
     }

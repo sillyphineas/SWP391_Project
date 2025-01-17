@@ -140,5 +140,6 @@ public class DAOBlog extends DBConnection {
     }
 
     public static void main(String[] args) {
+        
     }
 }

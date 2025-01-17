@@ -140,5 +140,7 @@ public class DAOCartItem extends DBConnection {
         }
         return n;
     }
-
+    public static void main(String[] args) {
+        
+    }
 }
