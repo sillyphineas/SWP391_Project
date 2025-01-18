@@ -11,6 +11,7 @@ import java.util.Date;
  * @author HP
  */
 public class Feedback {
+
     private int prorductID;
     private int reviewerID;
     private Date reviewTime;
@@ -82,6 +83,5 @@ public class Feedback {
     public String toString() {
         return "Feedback{" + "prorductID=" + prorductID + ", reviewerID=" + reviewerID + ", reviewTime=" + reviewTime + ", rating=" + rating + ", content=" + content + ", isDisabled=" + isDisabled + '}';
     }
-    
-   
+
 }

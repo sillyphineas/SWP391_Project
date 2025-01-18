@@ -9,9 +9,10 @@ package entities;
  * @author HP
  */
 public class Brand {
+
     private int Id;
     private String Name;
-    private String  Description ;
+    private String Description;
     private String Country;
 
     public Brand() {
@@ -60,5 +61,5 @@ public class Brand {
     public String toString() {
         return "Brand{" + "Id=" + Id + ", Name=" + Name + ", Description=" + Description + ", Country=" + Country + '}';
     }
-    
+
 }
