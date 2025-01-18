@@ -97,6 +97,35 @@ public class DAOUser extends DBConnection {
         return user;
     }
     
+    public User getUserByEmail(String email) {
+        String sql = "SELECT * FROM Users WHERE email = ?";
+        User user = null;
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, email);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                user = new User(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    rs.getString("passHash"),
+                    rs.getBoolean("gender"),
+                    rs.getString("phoneNumber"),
+                    rs.getString("resetToken"),
+                    rs.getDate("resetTokenExpired"),
+                    rs.getString("Address"),
+                    rs.getDate("DateOfBirth"),
+                    rs.getInt("roleId"),
+                    rs.getBoolean("isDisabled")
+                );
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return user;
+    }
+    
     public int updateUser(User user) {
         int n = 0;
         String sql = "UPDATE Users "
