@@ -11,6 +11,6 @@ package Controller;
 public class BlogControler {
     public static void main(String[] args) {
         String var = "nam";
-        System.out.println(var);
+        System.out.println(var); 
     }
 }
