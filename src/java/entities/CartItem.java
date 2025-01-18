@@ -9,5 +9,98 @@ package entities;
  * @author HP
  */
 public class CartItem {
+    	private int CartItemID  ,
+	CartID                  ,
+	ProductID               ;
+	private Double Price    ;
+	private int Quantity;
+	private double DiscountAmount,
+	TotalPrice  ;
+        private boolean  isDisabled  ;
+
+    public CartItem(int CartItemID, int CartID, int ProductID, Double Price, int Quantity, double DiscountAmount, double TotalPrice, boolean isDisabled) {
+        this.CartItemID = CartItemID;
+        this.CartID = CartID;
+        this.ProductID = ProductID;
+        this.Price = Price;
+        this.Quantity = Quantity;
+        this.DiscountAmount = DiscountAmount;
+        this.TotalPrice = TotalPrice;
+        this.isDisabled = isDisabled;
+    }
     
+     public CartItem() {
+    }
+    public int getCartItemID() {
+        return CartItemID;
+    }
+
+    public void setCartItemID(int CartItemID) {
+        this.CartItemID = CartItemID;
+    }
+
+    public int getCartID() {
+        return CartID;
+    }
+
+    public void setCartID(int CartID) {
+        this.CartID = CartID;
+    }
+
+    public int getProductID() {
+        return ProductID;
+    }
+
+    public void setProductID(int ProductID) {
+        this.ProductID = ProductID;
+    }
+
+    public Double getPrice() {
+        return Price;
+    }
+
+    public void setPrice(Double Price) {
+        this.Price = Price;
+    }
+
+    public int getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(int Quantity) {
+        this.Quantity = Quantity;
+    }
+
+    public double getDiscountAmount() {
+        return DiscountAmount;
+    }
+
+    public void setDiscountAmount(double DiscountAmount) {
+        this.DiscountAmount = DiscountAmount;
+    }
+
+    public double getTotalPrice() {
+        return TotalPrice;
+    }
+
+    public void setTotalPrice(double TotalPrice) {
+        this.TotalPrice = TotalPrice;
+    }
+
+    public boolean isIsDisabled() {
+        return isDisabled;
+    }
+
+    public void setIsDisabled(boolean isDisabled) {
+        this.isDisabled = isDisabled;
+    }
+
+    @Override
+    public String toString() {
+        return "CartItem{" + "CartItemID=" + CartItemID + ", CartID=" + CartID + ", ProductID=" + ProductID + ", Price=" + Price + ", Quantity=" + Quantity + ", DiscountAmount=" + DiscountAmount + ", TotalPrice=" + TotalPrice + ", isDisabled=" + isDisabled + '}';
+    }
+
+   
+        
+        
 }
