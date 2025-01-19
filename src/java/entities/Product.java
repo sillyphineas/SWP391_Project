@@ -230,6 +230,5 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" + "id=" + id + ", brandID=" + brandID + ", name=" + name + ", price=" + price + ", stock=" + stock + ", description=" + description + ", isDisabled=" + isDisabled + ", feedbackCount=" + feedbackCount + ", status=" + status + ", imageURL=" + imageURL + ", chipset=" + chipset + ", ram=" + ram + ", storage=" + storage + ", screenSize=" + screenSize + ", screenType=" + screenType + ", resolution=" + resolution + ", batteryCapacity=" + batteryCapacity + ", cameraSpecs=" + cameraSpecs + ", os=" + os + ", simType=" + simType + ", connectivity=" + connectivity + '}';
-    }
-
+    }s
 }

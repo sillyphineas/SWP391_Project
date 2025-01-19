@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Admin/Documents/NetBeansProjects/Project_SWP391/src/java/entities/CartItem.java</file>
             <file>file:/C:/Users/Admin/Documents/NetBeansProjects/Project_SWP391/src/java/entities/Product.java</file>
             <file>file:/C:/Users/Admin/Documents/NetBeansProjects/Project_SWP391/src/java/models/DAOProduct.java</file>
@@ -25,6 +26,16 @@
             <file>file:/C:/Users/Admin/Documents/NetBeansProjects/Project_SWP391/src/java/entities/Blog.java</file>
             <file>file:/C:/Users/Admin/Documents/NetBeansProjects/Project_SWP391/src/java/models/DAOCart.java</file>
             <file>file:/C:/Users/Admin/Documents/NetBeansProjects/Project_SWP391/src/java/models/DAOUser.java</file>
+=======
+            <file>file:/C:/SWP%20SP25/SWP391_Project/src/java/models/DAOVoucher.java</file>
+            <file>file:/C:/SWP%20SP25/SWP391_Project/src/java/models/DAOPayment.java</file>
+            <file>file:/C:/SWP%20SP25/SWP391_Project/src/java/models/DAOShipping.java</file>
+            <file>file:/C:/SWP%20SP25/SWP391_Project/src/java/entities/Shipping.java</file>
+            <file>file:/C:/SWP%20SP25/SWP391_Project/src/java/entities/Payment.java</file>
+            <file>file:/C:/SWP%20SP25/SWP391_Project/src/java/models/DBConnection.java</file>
+            <file>file:/C:/SWP%20SP25/SWP391_Project/src/java/models/DAOUser.java</file>
+            <file>file:/C:/SWP%20SP25/SWP391_Project/src/java/entities/Voucher.java</file>
+>>>>>>> 92eaa47e5f12d0b2200c9fe463579272399ce9a3
         </group>
     </open-files>
 </project-private>

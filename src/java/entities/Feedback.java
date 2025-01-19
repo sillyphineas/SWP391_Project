@@ -84,4 +84,8 @@ public class Feedback {
         return "Feedback{" + "prorductID=" + prorductID + ", reviewerID=" + reviewerID + ", reviewTime=" + reviewTime + ", rating=" + rating + ", content=" + content + ", isDisabled=" + isDisabled + '}';
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 92eaa47e5f12d0b2200c9fe463579272399ce9a3

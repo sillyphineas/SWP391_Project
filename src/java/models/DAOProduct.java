@@ -217,5 +217,4 @@ public class DAOProduct extends DBConnection {
     public static void main(String[] args) {
         
     }
-
 }

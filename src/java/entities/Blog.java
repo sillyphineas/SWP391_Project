@@ -33,6 +33,8 @@ public class Blog {
     public Blog() {
     }
 
+    
+
     public int getId() {
         return id;
     }
