@@ -4,8 +4,32 @@
         <servlet-name>loginController</servlet-name>
         <servlet-class>controllers.loginController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomePageServlet</servlet-name>
+        <servlet-class>controller.HomePageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogDetailServlet</servlet-name>
+        <servlet-class>controller.BlogDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserProfileServlet</servlet-name>
+        <servlet-class>controller.UserProfileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>loginController</servlet-name>
         <url-pattern>/loginController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogDetailServlet</servlet-name>
+        <url-pattern>/blogdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserProfileServlet</servlet-name>
+        <url-pattern>/userprofile</url-pattern>
     </servlet-mapping>
 </web-app>

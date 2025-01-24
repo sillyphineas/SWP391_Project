@@ -18,8 +18,9 @@ import java.util.logging.Logger;
  *
  * @author HP
  */
-public class DAOBrand extends DBConnection{
-     public int addBlogs(Brand other) {
+public class DAOBrand extends DBConnection {
+
+    public int addBlogs(Brand other) {
         int n = 0;
         String sql = "INSERT INTO [dbo].[Brands]\n"
                 + "           ([Name]\n"
@@ -39,7 +40,8 @@ public class DAOBrand extends DBConnection{
 
         return n;
     }
-      public int updateBrand(Brand other) {
+
+    public int updateBrand(Brand other) {
         int n = 0;
         String sql = "UPDATE [dbo].[Brands]\n"
                 + "   SET [Id] = ?\n"
@@ -59,7 +61,8 @@ public class DAOBrand extends DBConnection{
         }
         return n;
     }
-       public Brand getBrandById(int id) {
+
+    public Brand getBrandById(int id) {
         String sql = "Select * From Brands where Id = ?";
         Brand brand = null;
         try {
@@ -73,13 +76,13 @@ public class DAOBrand extends DBConnection{
                         rs.getString("Description"),
                         rs.getString("Country")
                 );
-            }    
+            }
         } catch (SQLException ex) {
             Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
         }
         return brand;
-       }
-       
+    }
+
     public Vector<Brand> getBrands(String sql) {
         Vector<Brand> vector = new Vector<>();
         try {
@@ -100,7 +103,7 @@ public class DAOBrand extends DBConnection{
         return vector;
     }
 
-public int delete(int id) {
+    public int delete(int id) {
         int n = 0;
         String sql = "DELETE FROM [dbo].[Brands]\n"
                 + "      WHERE id = ? ";
@@ -114,7 +117,46 @@ public int delete(int id) {
         return n;
     }
 
+    public Vector<Brand> getAllBrands() {
+        Vector<Brand> brands = new Vector<>();
+        String sql = "SELECT * FROM Brands"; // Thay đổi truy vấn SQL tùy vào cấu trúc bảng của bạn
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                Brand brand = new Brand(
+                        rs.getInt("Id"),
+                        rs.getString("Name"),
+                        rs.getString("Description"),
+                        rs.getString("Country")
+                );
+                brands.add(brand);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return brands;
+    }
+
     public static void main(String[] args) {
-        
+// Tạo đối tượng DAOBrand
+        DAOBrand daoBrand = new DAOBrand();
+
+        // Gọi phương thức getAllBrands() để lấy danh sách tất cả các thương hiệu
+        Vector<Brand> brands = daoBrand.getAllBrands();
+
+        // Kiểm tra kết quả trả về
+        if (brands.isEmpty()) {
+            System.out.println("Không tìm thấy thương hiệu nào trong cơ sở dữ liệu.");
+        } else {
+            System.out.println("Danh sách các thương hiệu:");
+            for (Brand brand : brands) {
+                System.out.println("ID: " + brand.getId());
+                System.out.println("Tên: " + brand.getName());
+                System.out.println("Mô tả: " + brand.getDescription());
+                System.out.println("Quốc gia: " + brand.getCountry());
+                System.out.println("----------------------------");
+            }
+        }
     }
 }

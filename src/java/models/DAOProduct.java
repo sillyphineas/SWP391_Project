@@ -214,8 +214,76 @@ public class DAOProduct extends DBConnection {
         return n;
     }
 
+    public Vector<Product> getProductsWithPagination(int page, int itemsPerPage) {
+        Vector<Product> productList = new Vector<>();
+
+        // Tính toán chỉ mục bắt đầu cho phân trang
+        int startIndex = (page - 1) * itemsPerPage;
+
+        // SQL để lấy sản phẩm theo phân trang
+        String sql = "SELECT * FROM Products WHERE isDisabled = 0 LIMIT ?, ?";
+
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, startIndex);  // Chỉ mục bắt đầu
+            pre.setInt(2, itemsPerPage); // Số lượng sản phẩm mỗi trang
+
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Product product = new Product(
+                        rs.getInt("id"),
+                        rs.getInt("brandID"),
+                        rs.getString("name"),
+                        rs.getDouble("price"),
+                        rs.getInt("stock"),
+                        rs.getString("description"),
+                        rs.getBoolean("isDisabled"),
+                        rs.getInt("feedbackCount"),
+                        rs.getString("status"),
+                        rs.getString("imageURL"),
+                        rs.getString("chipset"),
+                        rs.getInt("ram"),
+                        rs.getInt("storage"),
+                        rs.getDouble("screenSize"),
+                        rs.getString("screenType"),
+                        rs.getString("resolution"),
+                        rs.getInt("batteryCapacity"),
+                        rs.getString("cameraSpecs"),
+                        rs.getString("os"),
+                        rs.getString("simType"),
+                        rs.getString("connectivity")
+                );
+                productList.add(product);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return productList;
+    }
+
+    public int getTotalProducts() {
+        int totalItems = 0;
+
+        // SQL để lấy tổng số sản phẩm không bị vô hiệu hóa
+        String sql = "SELECT COUNT(*) FROM Products WHERE isDisabled = 0";
+
+        try {
+            Statement state = conn.createStatement();
+            ResultSet rs = state.executeQuery(sql);
+
+            if (rs.next()) {
+                totalItems = rs.getInt(1);  // Lấy tổng số sản phẩm
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return totalItems;
+    }
+
     public static void main(String[] args) {
-        
+
     }
 
 }
