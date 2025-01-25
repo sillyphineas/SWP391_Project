@@ -5,13 +5,19 @@
 package models;
 
 import entities.Cart;
+import entities.CartItem;
+import entities.Order;
+import entities.OrderDetail;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.tomcat.jakartaee.commons.lang3.ArrayUtils;
 
 /**
  *
@@ -140,11 +146,11 @@ public class DAOCart extends DBConnection {
         }
         return n;
     }
-    
+
     public int delete(int id) {
-        int n = 0;        
+        int n = 0;
         String sql = "DELETE FROM [dbo].[Cart]\n"
-                    + "      WHERE CartID = ? ";
+                + "      WHERE CartID = ? ";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, id);
@@ -154,7 +160,100 @@ public class DAOCart extends DBConnection {
         }
         return n;
     }
-    public static void main(String[] args) {
+
+    public Cart getCartByCustomerID(int customerID) {
+        Cart cart = null;
+        String sql = "SELECT * FROM Cart WHERE CustomerID = ? AND CartStatus = 'Active'";
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+            pre.setInt(1, customerID);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                cart = new Cart();
+                cart.setCartID(rs.getInt("CartID"));
+                cart.setCustomerID(rs.getInt("CustomerID"));
+                cart.setCartStatus(rs.getString("CartStatus"));
+                cart.setTotalPrice(rs.getDouble("TotalPrice"));
+                cart.setCreatedAt(rs.getString("CreatedAt"));
+                cart.setUpdatedAt(rs.getString("UpdatedAt"));
+                cart.setCartItems(getCartItemsByCartID(cart.getCartID()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cart;
+    }
+
+    public List<CartItem> getCartItemsByCartID(int cartID) {
+        List<CartItem> cartItems = new ArrayList<>();
+        String sql = "SELECT * FROM CartItem WHERE CartID = ? AND isDisabled = false";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setInt(1, cartID);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                CartItem item = new CartItem();
+                item.setCartItemID(rs.getInt("CartItemID"));
+                item.setCartID(rs.getInt("CartID"));
+                item.setProductID(rs.getInt("ProductID"));
+                item.setPrice(rs.getDouble("Price"));
+                item.setQuantity(rs.getInt("Quantity"));
+                item.setDiscountAmount(rs.getDouble("DiscountAmount"));
+                item.setTotalPrice(rs.getDouble("TotalPrice"));
+                item.setDisabled(rs.getBoolean("isDisabled"));
+                cartItems.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cartItems;
+    }
+
+    public void deleteCartItem(int cartItemID) {
+        String sql = "UPDATE CartItem SET isDisabled = true WHERE CartItemID = ?";
+        try (PreparedStatement pre = conn.prepareStatement(sql);) {
+            pre.setInt(1, cartItemID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateCartItemQuantity(CartItem cartItem, int newQuantity) {
+        String sql = "UPDATE CartItem SET Quantity = ?, TotalPrice = ? WHERE CartItemID = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            double updatedTotalPrice = cartItem.getPrice() * newQuantity;
+
+            stmt.setInt(1, newQuantity);
+            stmt.setDouble(2, updatedTotalPrice);
+            stmt.setInt(3, cartItem.getCartItemID());
+
+            stmt.executeUpdate();  // Thực thi câu lệnh UPDATE
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteCartItemsByCartID(int cartID) {
+        String sql = "DELETE FROM CartItems WHERE cartID = ?";
         
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, cartID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void updateCartStatus(int cartID, String status) {
+        String query = "UPDATE Cart SET status = ? WHERE cartID = ?";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, cartID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void main(String[] args) {
+
     }
 }

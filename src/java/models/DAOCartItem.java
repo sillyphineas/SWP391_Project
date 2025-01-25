@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -140,7 +142,58 @@ public class DAOCartItem extends DBConnection {
         }
         return n;
     }
+
+    public List<CartItem> getCartDetails(int customerId) throws SQLException {
+        String sql = """
+        SELECT ci.CartItemID, ci.ProductID, p.Title AS ProductTitle, ci.Price, 
+               ci.Quantity, ci.TotalPrice, c.TotalPrice AS CartTotal, c.CartStatus
+        FROM CartItem ci
+        JOIN Cart c ON ci.CartID = c.CartID
+        JOIN Products p ON ci.ProductID = p.id
+        WHERE c.CustomerID = ? AND ci.isDisabled = 0 AND c.CartStatus = 'Pending'
+    """;
+        List<CartItem> cartItems = new ArrayList<>();
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+            pre.setInt(1, customerId);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                cartItems.add(new CartItem(
+                        rs.getInt("CartItemID"),
+                        rs.getInt("ProductID"),
+                        rs.getDouble("Price"),
+                        rs.getInt("Quantity"),
+                        rs.getDouble("TotalPrice")
+                ));
+            }
+        }
+        return cartItems;
+    }
+
+    public void removeCartItem(int cartItemId) throws SQLException {
+        String sql = "UPDATE CartItem SET isDisabled = 1 WHERE CartItemID = ?";
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+            pre.setInt(1, cartItemId);
+            pre.executeUpdate();
+        }
+    }
+
+    public boolean updateCartItemQuantity(CartItem cartItem, int newQuantity) {
+    String sql = "UPDATE CartItems SET quantity = ? WHERE id = ?";
+    try ( PreparedStatement pre = conn.prepareStatement(sql)) {
+
+        pre.setInt(1, newQuantity);
+        pre.setInt(2, cartItem.getCartItemID());
+        return pre.executeUpdate() > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    
+
     public static void main(String[] args) {
-        
+
     }
 }

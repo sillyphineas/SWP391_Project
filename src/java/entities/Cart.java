@@ -4,6 +4,8 @@
  */
 package entities;
 
+import java.util.List;
+
 /**
  *
  * @author HP
@@ -81,6 +83,10 @@ public class Cart {
     @Override
     public String toString() {
         return "Cart{" + "CartID=" + CartID + ", CustomerID=" + CustomerID + ", CartStatus=" + CartStatus + ", TotalPrice=" + TotalPrice + ", CreatedAt=" + CreatedAt + ", UpdatedAt=" + UpdatedAt + '}';
+    }
+
+    public void setCartItems(List<CartItem> cartItemsByCartID) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
         
         
