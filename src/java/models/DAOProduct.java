@@ -285,5 +285,45 @@ public class DAOProduct extends DBConnection {
     public static void main(String[] args) {
 
     }
+    public Vector<Product> getProductsWithPaginationAndSorting(int page, int itemsPerPage) {
+    Vector<Product> productList = new Vector<>();
+    int startIndex = (page - 1) * itemsPerPage;
+    String sql = "SELECT * FROM Products WHERE isDisabled = 0 ORDER BY name DESC LIMIT ?, ?";
+    try {
+        PreparedStatement pre = conn.prepareStatement(sql);
+        pre.setInt(1, startIndex);
+        pre.setInt(2, itemsPerPage);
+        ResultSet rs = pre.executeQuery();
+        while (rs.next()) {
+            Product product = new Product(
+                    rs.getInt("id"),
+                    rs.getInt("brandID"),
+                    rs.getString("name"),
+                    rs.getDouble("price"),
+                    rs.getInt("stock"),
+                    rs.getString("description"),
+                    rs.getBoolean("isDisabled"),
+                    rs.getInt("feedbackCount"),
+                    rs.getString("status"),
+                    rs.getString("imageURL"),
+                    rs.getString("chipset"),
+                    rs.getInt("ram"),
+                    rs.getInt("storage"),
+                    rs.getDouble("screenSize"),
+                    rs.getString("screenType"),
+                    rs.getString("resolution"),
+                    rs.getInt("batteryCapacity"),
+                    rs.getString("cameraSpecs"),
+                    rs.getString("os"),
+                    rs.getString("simType"),
+                    rs.getString("connectivity")
+            );
+            productList.add(product);
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    return productList;
+}
 
 }

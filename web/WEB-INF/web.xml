@@ -16,6 +16,14 @@
         <servlet-name>UserProfileServlet</servlet-name>
         <servlet-class>controller.UserProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductDetails</servlet-name>
+        <servlet-class>controller.ProductDetails</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductList</servlet-name>
+        <servlet-class>controller.ProductList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>loginController</servlet-name>
         <url-pattern>/loginController</url-pattern>
@@ -31,5 +39,13 @@
     <servlet-mapping>
         <servlet-name>UserProfileServlet</servlet-name>
         <url-pattern>/userprofile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDetails</servlet-name>
+        <url-pattern>/ProductDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductList</servlet-name>
+        <url-pattern>/ProductList</url-pattern>
     </servlet-mapping>
 </web-app>
