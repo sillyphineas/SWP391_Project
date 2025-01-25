@@ -4,6 +4,7 @@
  */
 package controllers;
 
+import entities.User;
 import helper.Validate;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -13,15 +14,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import models.DAOUser;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "RegisterController", urlPatterns = {"/RegisterController"})
+public class RegisterController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +41,10 @@ public class LoginController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
+            out.println("<title>Servlet RegisterController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RegisterController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,8 +62,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/login.jsp");
-        rd.forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -79,15 +79,32 @@ public class LoginController extends HttpServlet {
         DAOUser daouser = new DAOUser();
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirmPassword");
 
-        if (Validate.checkLoginValidUser(email, password)) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute("isLoggedIn", true);
-            session.setAttribute("user", daouser.getUserByEmail(email));
-            
-            response.getWriter().write("success:" + daouser.getUserByEmail(email).getRoleId());
+        response.setContentType("text/plain"); // Định dạng phản hồi
+        if (Validate.checkRegisterExistedEmail(email)) {
+            if (Validate.checkRegisterPasswordLength(password)) {
+                if (Validate.checkRegisterEqualPassword(password, confirmPassword)) {
+                    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+                    User user = new User();
+                    user.setEmail(email);
+                    user.setPassHash(hashedPassword);
+                    user.setRoleId(2);
+                    user.setDisabled(false);
+                    int isRegistered = daouser.addUser(user);
+                    if (isRegistered != 0) {
+                        response.getWriter().write("Register successfully!");
+                    } else {
+                        response.getWriter().write("Error registering user.");
+                    }
+                } else {
+                    response.getWriter().write("Passwords do not match!");
+                }
+            } else {
+                response.getWriter().write("You need to enter a password at least 6 characters!");
+            }
         } else {
-            response.getWriter().write("Invalid email or password");
+            response.getWriter().write("Email was existed!");
         }
     }
 

@@ -4,7 +4,7 @@
  */
 package controllers;
 
-import helper.Validate;
+import entities.User;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,14 +14,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import models.DAOUser;
+import helper.Authorize;
 
 /**
  *
  * @author HP
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "HomeForward", urlPatterns = {"/HomeForward"})
+public class HomeForward extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +40,10 @@ public class LoginController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
+            out.println("<title>Servlet HomeForward</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet HomeForward at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,8 +61,20 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/login.jsp");
-        rd.forward(request, response);
+        HttpSession session = request.getSession(false);
+        User user = null;
+
+        if (session != null) {
+            user = (User) session.getAttribute("user");
+        }
+
+        if (Authorize.isAccepted(user, "/HomeForward")) {
+            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/index.jsp");
+            rd.forward(request, response);
+        } else {
+            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/404.jsp");
+            rd.forward(request, response);
+        }
     }
 
     /**
@@ -76,19 +88,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOUser daouser = new DAOUser();
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        if (Validate.checkLoginValidUser(email, password)) {
-            HttpSession session = request.getSession(true);
-            session.setAttribute("isLoggedIn", true);
-            session.setAttribute("user", daouser.getUserByEmail(email));
-            
-            response.getWriter().write("success:" + daouser.getUserByEmail(email).getRoleId());
-        } else {
-            response.getWriter().write("Invalid email or password");
-        }
+        processRequest(request, response);
     }
 
     /**

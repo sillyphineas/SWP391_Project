@@ -17,22 +17,14 @@ public class DAOUser extends DBConnection {
 
     public int addUser(User user) {
         int n = 0;
-        String sql = "INSERT INTO Users (name, email, passHash, gender, phoneNumber, resetToken, resetTokenExpired, Address, DateOfBirth, roleId, isDisabled) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Users (email, passHash, roleId, isDisabled)\n" +
+                "VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setString(1, user.getName());
-            pre.setString(2, user.getEmail());
-            pre.setString(3, user.getPassHash());
-            pre.setBoolean(4, user.isGender());
-            pre.setString(5, user.getPhoneNumber());
-            pre.setString(6, user.getResetToken());
-            pre.setDate(7, user.getResetTokenExpired());
-            pre.setString(8, user.getAddress());
-            pre.setDate(9, user.getDateOfBirth());
-            pre.setInt(10, user.getRoleId());
-            pre.setBoolean(11, user.isDisabled());
-            
+            pre.setString(1, user.getEmail());
+            pre.setString(2, user.getPassHash());
+            pre.setInt(3, user.getRoleId());
+            pre.setBoolean(4, user.isDisabled());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
